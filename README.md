@@ -34,13 +34,10 @@
 - If you find an error with this script, directly contact me in the <a href="https://discord.com/invite/0VEIly8qa8WUZAzV">Shrekciety Discord</a>!
 
 ### Credits
-(Developer)
-- Master_64
-(Technical Help)
-- <a href="https://github.com/kevinjpetersen">KevinJPetersen</a>
-- Seifer
-(General Help)
-- Janek
-- mrjor
-- Im_a_mirror
-- Metallicafan212
+- (Developer) Master_64
+- (Technical Help) <a href="https://github.com/kevinjpetersen">KevinJPetersen</a>
+- (Technical Help) Seifer
+- (General Help) Janek
+- (General Help) mrjor
+- (General Help) Im_a_mirror
+- (General Help) Metallicafan212
