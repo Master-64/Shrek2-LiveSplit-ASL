@@ -88,7 +88,7 @@ startup // All code that is ran before running all logic
 
 init // Initializes the script, and assigns a version number to it
 {
-	version = "v3.0 [Release]";
+	version = "v3.1 [Release]";
 }
 
 update // Runs everytime the script is ticked
@@ -220,12 +220,11 @@ gameTime // Takes the value of LevelInfo.TimeSeconds from the game, and makes th
 		}
 	}
 	
-	if(settings["Account For Pausing"]) // If we're accounting for pausing, then we need to skip the pause check, since that's normally how the in-game timer responds to pausing
+	if(settings["Account For Pausing"] || current.TimeSeconds == 0) // If we're accounting for pausing, then we need to skip the pause check, since that's normally how the in-game timer responds to pausing. If the other check is true, that means that the player is loading a save while the game is paused, and we should pause the game time (pausing game time like this is mostly accurate)
 	{
 		return TimeSpan.FromSeconds(vars.TotalGameTime);
 	}
-	
-	if(current.IsPaused == 0) // Updates the game time with the relative in-game timer
+	else if(current.IsPaused == 0) // Updates the game time with the relative in-game timer
 	{
 		return TimeSpan.FromSeconds(vars.TotalGameTime);
 	}
