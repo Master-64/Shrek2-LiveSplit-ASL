@@ -16,17 +16,17 @@
 4. Compare to Game Time (it will ask you if you haven't done this)
 5. Done! You should now have an autosplitter and load remover
 
-# So, what's different about this when compared to all older autosplitter?
+# So, what's different about this when compared to all older autosplitters?
 - Overall more stability and consistency
 - Much easier to recompile/modify
-- Game time and Real time are separate
-- Game time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate
+- Game Time and Real Time are separate
+- Game Time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate
 
 # Features
 - Automatic splitting across all main levels, with support for modded levels (Note: manual split required for FGM!)
 - Automatic starting and resetting of splits
-- Proper load remover that will remove the load times from the game in real time for the game time shown in LiveSplit
-- Game time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate (déjà vu)
+- Proper load remover that will remove the load times from the game in Real Time for the Game Time shown in LiveSplit
+- Game Time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate (déjà vu)
 
 # Important notices!
 - Make sure the refresh rate of LiveSplit matches with your game!
