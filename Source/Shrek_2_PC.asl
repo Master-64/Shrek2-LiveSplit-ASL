@@ -27,10 +27,20 @@ state("game") // Grabs the process "game.exe" and tracks a few pointers for valu
 startup // All code that is ran before running all logic
 {
 	// Adds settings
-	settings.Add("Reset on Game Close", true, "If true, resets when the game process is closed.");
-	settings.Add("Split On Played Maps", false, "[Caution] If true, will split even if the map has been finished before.");
-	settings.Add("Any Map Splits", false, "[Caution] If true, splits upon changing to any map.");
-	settings.Add("Account For Pausing", false, "[Not officially allowed] If true, game time pauses upon pausing.");
+	settings.Add("Reset on Game Close", true, "Reset on Game Close");
+	settings.SetToolTip("Reset on Game Close", "If true, the autosplitter will reset the run once the game closes, which is safe to automatically do, as the autosplitter shouldn't be trying to run logic if the game's process isn't running.");
+	settings.Add("Split On Played Maps", false, "[Caution] Split On Played Maps");
+	settings.SetToolTip("Split On Played Maps", "If true, if a map is loaded that has already been loaded before, a split will occur.");
+	settings.Add("Any Map Splits", false, "[Caution] Any Map Splits");
+	settings.SetToolTip("Any Map Splits", "If true, splits upon changing to any map. Don't use this unless you know what you're doing.");
+	settings.Add("Account For Pausing", false, "[Not officially allowed] Account For Pausing");
+	settings.SetToolTip("Account For Pausing", "If true, game time pauses upon pausing.");
+	
+	// Adds important notices about the autosplitter below the options listed above
+	settings.Add("Display1", false, "_____________________________");
+	settings.Add("Display2", false, "Notices:");
+	settings.Add("Display3", false, "- You must manually split when killing FGM");
+	settings.Add("Display4", false, "- Don't play in fullscreen; game time will pause incorrectly");
 	
 	refreshRate = 60; // Makes the refresh rate of the script high enough to be 100% consistent on 60 FPS, and mostly consistent on uncapped runs
 	
@@ -77,14 +87,19 @@ startup // All code that is ran before running all logic
 
 init // Initializes the script, and assigns a version number to it
 {
-	version = "v3.1.1 [Release]";
+	version = "v3.1.2 [Release]";
 }
 
 update // Runs everytime the script is ticked
 {
 	if(current.CurrentMapAddress != 0) // NULL check
 	{
-		vars.CurrentMap = new DeepPointer(new IntPtr(current.CurrentMapAddress)).DerefString(game, 1024).ToUpper().Replace(".UNR", "");
+		try // Although a try-catch block is not preferred, due to how the DeepPointer() function works, it's necessary in order to prevent the entire timer from breaking when it very rarely returns NULL
+		{
+			vars.CurrentMap = new DeepPointer(new IntPtr(current.CurrentMapAddress)).DerefString(game, 1024).ToUpper().Replace(".UNR", "");
+		}
+		catch
+		{}
 		
 		if(vars.OldMap != "") // Hacky code because ASL Part 1
 		{
