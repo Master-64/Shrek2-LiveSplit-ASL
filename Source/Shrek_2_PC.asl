@@ -13,26 +13,13 @@
 // - mrjor
 // - Im_a_mirror
 // - Metallicafan212
-// 
-// 
-// Features of this script:
-// - Automatic splitting across all main levels, with support for modded levels (Note: manual split required for FGM!)
-// - Automatic starting and resetting of splits
-// - Proper load remover that will remove the load times from the game in real time for the game time shown in LiveSplit
-// - Game time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate
-// 
-// Important notice in regards to this script's consistency:
-// - Since this is a .asl script, the frequency rate this script runs at is entirely dependent on LiveSplit! LiveSplit's default refresh rate is 20 HZ, so you need to increase this!
-//  - If you're playing on 60 FPS, make sure that the refresh rate of LiveSplit is also at 60 HZ
-//  - If you're playing on an uncapped framerate, I recommend setting the refresh rate of LiveSplit to your average framerate you experience in-game. See below for how to get that
-//   - An easy metric is to load into Prison Shrek and get your average framerate through a third-party software, then double that value, and that should be a high enough refresh rate. If you have no idea, set it to 100 HZ
 
 
 state("game") // Grabs the process "game.exe" and tracks a few pointers for values
 {
 	float TimeSeconds : "Engine.dll", 0x4DFFF8, 0x68, 0x14C, 0x9C, 0x480;		// Returns LevelInfo.TimeSeconds
 	float TimeAfterLoading : "Engine.dll", 0x4DFFF8, 0x30, 0x34, 0xA40;			// Returns SHHeroController.TimeAfterLoading (value is dynamically assigned, so the value can appear incorrect for a frame or so)
-	byte IsPaused : "Engine.dll", 0x44315C;										// Returns 1 if LevelInfo.Pauser exists
+	byte IsPaused : "Engine.dll", 0x44315C;										// Returns 1 if LevelInfo.Pauser exists. Only reliable while the game is in windowed mode
 	uint CurrentMapAddress : "Engine.dll", 0x4DFFF8, 0x68, 0x9C, 0xA8, 0x4E0;	// Returns the current map address. Requires additional work to get the value of the current map
 	float TimeDilation : "Engine.dll", 0x4DFFF8, 0x68, 0x14C, 0x9C, 0x47C;		// Returns LevelInfo.TimeDilation
 }
@@ -44,6 +31,8 @@ startup // All code that is ran before running all logic
 	settings.Add("Split On Played Maps", false, "[Caution] If true, will split even if the map has been finished before.");
 	settings.Add("Any Map Splits", false, "[Caution] If true, splits upon changing to any map.");
 	settings.Add("Account For Pausing", false, "[Not officially allowed] If true, game time pauses upon pausing.");
+	
+	refreshRate = 60; // Makes the refresh rate of the script high enough to be 100% consistent on 60 FPS, and mostly consistent on uncapped runs
 	
 	if(timer.CurrentTimingMethod == TimingMethod.RealTime) // Displays a popup informing the user that they need to be aware about the LRT timing method
 	{		

@@ -2,10 +2,10 @@
  An autosplitter & load remover for Shrek 2 (PC) done via .asl.
  This repository is the most up-to-date LiveSplit autosplitter for Shrek 2 (PC).
 
-# How-to install (NOT POSSIBLE AT THE MOMENT, USE BELOW INSTALLATION METHOD)
+# How-to install
 1. Download LiveSplit
 2. Click 'Edit Splits' and set the game title to Shrek 2 (PC)
-3. Click enable Autosplitter & Load Removal
+3. Click and enable 'Autosplitter and Load Removal is available. (By Master_64)'
 4. Compare to Game Time (it will ask you if you haven't done this)
 5. Done! You should now have an autosplitter and load remover
 
@@ -29,9 +29,13 @@
 - Game Time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate (déjà vu)
 
 # Important notices!
-- Make sure the refresh rate of LiveSplit matches with your game!
+- If the game is running on an uncapped framerate, the autosplitter may make some errors. This autosplitter is calibrated to work mainly on 60 FPS
 - This autosplitter and load remover was tested on a clean English version of Shrek 2 (PC); may not work on other native versions
 - If you find an error with this script, directly contact me in the <a href="https://discord.com/invite/0VEIly8qa8WUZAzV">Shrekciety Discord</a>!
+
+# Known Bugs or Issues
+- No autosplit for when FGM is defeated
+- Pausing the game while in fullscreen mode causes the game timer to incorrectly pause. Play in windowed mode for the time being
 
 ### Credits
 - (Developer) Master_64
