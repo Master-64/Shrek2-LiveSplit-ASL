@@ -77,7 +77,7 @@ startup // All code that is ran before running all logic
 
 init // Initializes the script, and assigns a version number to it
 {
-	version = "v3.1 [Release]";
+	version = "v3.1.1 [Release]";
 }
 
 update // Runs everytime the script is ticked
