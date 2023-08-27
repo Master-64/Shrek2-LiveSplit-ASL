@@ -29,18 +29,18 @@
 - Game Time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate (déjà vu)
 
 # Important notices!
-- If the game is running on an uncapped framerate, the autosplitter may make some errors. This autosplitter is calibrated to work mainly on 60 FPS
-- This autosplitter and load remover was tested on a clean English version of Shrek 2 (PC); may not work on other native versions
-- If you find an error with this script, directly contact me in the <a href="https://discord.com/invite/0VEIly8qa8WUZAzV">Shrekciety Discord</a>!
+- If the game is running on an uncapped framerate, the autosplitter may make errors more commonly than on 60 FPS. This autosplitter is calibrated to work mainly on 60 FPS
+- This autosplitter and load remover was tested on a clean English version of Shrek 2 (PC); may not work on other native versions, or especially on modified directories
+- If you find an error with this script, directly contact Master_64 in the <a href="https://discord.com/invite/0VEIly8qa8WUZAzV">Shrekciety Discord</a>!
 
 # Known Bugs or Issues
-- No autosplit for when FGM is defeated
-- Pausing the game while in fullscreen mode causes the game timer to incorrectly pause. Play in windowed mode for the time being
+- No major issues known at the moment
 
 ### Credits
-- (Developer) Master_64
-- (Technical Help) <a href="https://github.com/kevinjpetersen">KevinJPetersen</a>
-- (Technical Help) Seifer
+- (Developer) <a href="https://github.com/Master-64">Master_64</a>
+- (Technical Help) <a href="https://github.com/kevinjpetersen">HuniePop</a>
+- (Technical Help) <a href="https://www.twitch.tv/seifertv">Seifer</a>
+- (Technical Help) Nikvel
 - (General Help) Janek
 - (General Help) mrjor
 - (General Help) Im_a_mirror
