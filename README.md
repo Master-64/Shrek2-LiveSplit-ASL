@@ -23,7 +23,7 @@
 - Game Time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate
 
 # Features
-- Automatic splitting across all main levels, with support for modded levels (Note: manual split required for FGM!)
+- Automatic splitting across all main levels, with support for modded levels
 - Automatic starting and resetting of splits
 - Proper load remover that will remove the load times from the game in Real Time for the Game Time shown in LiveSplit
 - Game Time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate (déjà vu)

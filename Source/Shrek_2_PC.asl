@@ -90,7 +90,7 @@ startup // All code that is ran before running all logic
 
 init // Initializes the script, and assigns a version number to it
 {
-	version = "ASL v4.0 [Release]";
+	version = "ASL v4.0.1 [Release]";
 }
 
 update // Runs everytime the script is ticked
@@ -100,6 +100,11 @@ update // Runs everytime the script is ticked
 		try // Although a try-catch block is not preferred, due to how the DeepPointer() function works, it's necessary in order to prevent the entire timer from breaking when it very rarely returns NULL
 		{
 			vars.CurrentMap = new DeepPointer(new IntPtr(current.CurrentMapAddress)).DerefString(game, 1024).ToUpper().Replace(".UNR", "");
+			
+			if(vars.CurrentMap.Contains("?")) // The map pointer can rarely return weird values containing question marks, so if that happens, we need to make sure that variable <vars.CurrentMap> doesn't update
+			{
+				vars.CurrentMap = vars.LastMap;
+			}
 		}
 		catch
 		{
@@ -108,6 +113,11 @@ update // Runs everytime the script is ticked
 		
 		if(vars.LastMap != "" && vars.CurrentMap != vars.OldMap) // (Hacky code because ASL Part 1) Attempts to split if the map pointer just started returning a value after being NULL. This check is also done in a way where loading a save doesn't split if it's on the same map we were previously on
 		{
+			print("Split Logs");
+			print("CurrentMap:" + vars.CurrentMap.ToString());
+			print("OldMap:" + vars.OldMap.ToString());
+			print("LastMap:" + vars.LastMap.ToString());
+			
 			vars.PlayedMaps.Add(vars.LastMap);
 			
 			vars.LastMap = "";
@@ -115,7 +125,13 @@ update // Runs everytime the script is ticked
 			vars.ShouldSplit = true;
 		}
 		
-		vars.OldMap = (string)vars.CurrentMap;
+		if(vars.CurrentMap != vars.OldMap) // Only updates <vars.OldMap> if the map has changed. This is a necessary check, because otherwise there will be instances of a split not occuring when it should (the map pointer can point to the previous map for 1 frame under rare circumstances)
+		{
+			vars.OldMap = (string)vars.CurrentMap;
+			
+			print("Updating <vars.OldMap>");
+			print("Updated OldMap:" + vars.OldMap.ToString());
+		}
 	}
 	else
 	{
@@ -180,6 +196,8 @@ split // Waits until a map has changed, then runs logic to see if the map is dif
 			{
 				if(item.Contains(vars.CurrentMap))
 				{
+					print("Map is excluded");
+					
 					return false;
 				}
 			}
@@ -191,6 +209,8 @@ split // Waits until a map has changed, then runs logic to see if the map is dif
 			{
 				if(item.Contains(vars.CurrentMap))
 				{
+					print("Map has been played before");
+					
 					return false;
 				}
 			}
@@ -200,7 +220,7 @@ split // Waits until a map has changed, then runs logic to see if the map is dif
 	}
 	else if(settings["Split On FGM Kill"] && vars.CurrentMap == "11_FGM_BATTLE") // Are we planning on splitting when FGM is killed, and is the game on level 11_FGM_Battle.unr?
 	{
-		if(current.BossFGM_Health == 0.0 && old.BossFGM_Health == 1.0) // (NULL check isn't possible here, so exceptions may be raised) Did FGM just die in an intended way (FGM should always go from 1.0 Health to 0.0 Health under normal circumstances)? If so, split
+		if(current.BossFGM_Health == 0.0 && old.BossFGM_Health > 0.0) // (NULL check isn't possible here, so exceptions may be raised) Did FGM just die? If so, split
 		{
 			return true;
 		}
