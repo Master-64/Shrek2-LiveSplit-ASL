@@ -19,7 +19,6 @@
 // - Ablazeknight (Testing)
 // - Metallicafan212 (Technical Feedback)
 
-
 state("game") // Grabs the process "game.exe" and tracks a few pointers for values
 {
 	float TimeSeconds : "Engine.dll", 0x4DFFF8, 0x68, 0x14C, 0x9C, 0x480;			// [Found by: Master_64] Returns LevelInfo.TimeSeconds
@@ -42,8 +41,8 @@ startup // All code that is ran before running all logic
 	settings.SetToolTip("Show FPS Counter", "If true, the in-game FPS counter shows in the top-right. Do not enable if using FPS patch. Requires game restart to disable.");
 	settings.Add("Use MasterToolz Timer", false, "[Caution] Use MasterToolz Timing Method");
 	settings.SetToolTip("Use MasterToolz Timer", "If true, the timing method instead relies on what MasterToolz says, making the timers perfectly\n" + "in sync. This makes the LiveSplit timer 99.99% accurate. Requires v4.0.2 of MasterToolz or higher.");
-	settings.Add("High Refresh Rate Timer", false, "[Caution] Use High Refresh Rate Timer");
-	settings.SetToolTip("High Refresh Rate Timer", "If true, the timer script will update 4x as many times, fixing various errors with the script, at\n" + "the cost of 50% more CPU usage (relative to what it previously used). Should be used if the computer can handle it.\n" + "Consider enabling if running into issues.");
+	settings.Add("High Refresh Rate Timer", true, "Use High Refresh Rate Timer");
+	settings.SetToolTip("High Refresh Rate Timer", "If true, the timer script will update 4x as many times, fixing various errors with the script, at\n" + "the cost of 25% more CPU usage (relative to what it previously used). Should be used if the computer can handle it.\n" + "Consider enabling if running into issues.");
 	settings.Add("Auto-Delete Save Files On Reset", false, "[Caution] Auto-Delete Save Files On Reset");
 	settings.SetToolTip("Auto-Delete Save Files On Reset", "If true, when a run is reset, all 6 save files are deleted, so that a new run can be instantly started.\n" + "While this is enabled, do not try to delete any of the main 6 save files in-game; doing so will softlock your game.");
 	settings.Add("Split On Played Maps", false, "[Caution] Split On Played Maps");
@@ -103,11 +102,77 @@ startup // All code that is ran before running all logic
 	vars.SaveTime = 0.0;					// The time it took for the latest save to occur
 	vars.AllSaveTimes = new List<float>();	// All individual save times that were detected during gameplay
 	vars.LastLogLine = "";					// The last line read from the log buffer
+	
+	// Cultural-friendly float parser
+	Func<string, float> CustomParseFloat = (value) => {
+		// Remove any leading or trailing whitespace
+		value = value.Trim();
+		
+		// Initialize variables
+		float result = 0f;
+		bool isNegative = false;
+		bool decimalPointEncountered = false;
+		float decimalPlaceValue = 1f;
+		
+		// Check for negative sign
+		if (value.StartsWith("-"))
+		{
+			isNegative = true;
+			value = value.Substring(1); // Remove the negative sign for further processing
+		}
+		
+		// Iterate through each character in the string
+		for (int i = 0; i < value.Length; i++)
+		{
+			char currentChar = value[i];
+			
+			// Handle digits
+			if (char.IsDigit(currentChar))
+			{
+				int digit = currentChar - '0'; // Convert char to int
+				if (decimalPointEncountered)
+				{
+					// If we have encountered a decimal point, adjust the decimal place value
+					decimalPlaceValue *= 0.1f;
+					result += digit * decimalPlaceValue;
+				}
+				else
+				{
+					result = result * 10 + digit; // Build the integer part
+				}
+			}
+			// Handle decimal point
+			else if (currentChar == '.' || currentChar == ',')
+			{
+				if (decimalPointEncountered)
+				{
+					// If we encounter more than one decimal point, throw an error
+					print("Invalid float format: " + value.ToString());
+				}
+				decimalPointEncountered = true; // Mark that we have encountered a decimal point
+			}
+			else
+			{
+				// If we encounter an invalid character, throw an error
+				print("Invalid character in float: " + currentChar.ToString() + " in " + value.ToString());
+			}
+		}
+		
+		// Apply the negative sign if necessary
+		if (isNegative)
+		{
+			result = -result;
+		}
+		
+		return result;
+	};
+	
+	vars.StringToFloat = CustomParseFloat;
 }
 
 init // Initializes the script, and assigns a version number to it
 {
-	version = "ASL v5.0 [Release]";
+	version = "ASL v5.0.1 [Release]";
 }
 
 update // Runs everytime the script is ticked
@@ -248,7 +313,9 @@ update // Runs everytime the script is ticked
 				
 				if(line.Contains("Log: Save=") && (line.Substring(line.IndexOf("Log: Save=") + "Log: Save=".Length).Contains(".") && line.Substring(line.IndexOf("Log: Save=") + "Log: Save=".Length).Split('.')[1].Length == 6))
 				{
-					float saveTime = (float)(float.Parse(line.Substring(line.IndexOf("Log: Save=") + "Log: Save=".Length).Trim()) * 0.001);
+					// Cultural code fix
+					string logLine = line.Substring(line.IndexOf("Log: Save=") + "Log: Save=".Length).Trim().Replace(",", ".");
+					float saveTime = vars.StringToFloat(logLine) * 0.001f;
 					
 					if(!vars.AllSaveTimes.Contains(saveTime))
 					{
@@ -289,6 +356,8 @@ start // Returns true if the autosplitter should begin
 
 onStart // Fires when a run begins
 {
+	vars.TotalGameTime = 0.0;
+	
 	if(settings["High Refresh Rate Timer"])
 	{
 		// Makes the refresh rate of the script basically 100%
@@ -300,7 +369,7 @@ onStart // Fires when a run begins
 		// Makes the refresh rate of the script high enough to
 		// be 100% consistent on 60 FPS, and mostly consistent
 		// on uncapped runs.
-		refreshRate = 60;
+		refreshRate = 120;
 	}
 	
 	// Shows the FPS counter if enabled
@@ -321,7 +390,6 @@ reset // Returns true if the game should be reset
 onReset // Fires when a reset happens
 {
 	// Reset a bunch of variables
-	vars.TotalGameTime = 0.0;
 	vars.PlayedMaps = new List<string>();
 	vars.PrevLogBuffer = "";
 	vars.PrevLogBufferCursor = 0;
