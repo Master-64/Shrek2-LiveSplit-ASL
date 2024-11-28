@@ -16,32 +16,40 @@
 4. Compare to Game Time (it will ask you if you haven't done this)
 5. Done! You should now have an autosplitter and load remover
 
-# So, what's different about this when compared to all older autosplitters?
-- Overall more stability and consistency
-- Much easier to recompile/modify
-- Game Time and Real Time are separate
-- Game Time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate
-
 # Features
 - Automatic splitting across all main levels, with support for modded levels
 - Automatic starting and resetting of splits
 - Proper load remover that will remove the load times from the game in Real Time for the Game Time shown in LiveSplit
-- Game Time in LiveSplit represents the exact in-game timer, meaning timing is incredibly accurate (déjà vu)
+- Game Time in LiveSplit represents the in-game timer, meaning timing is incredibly accurate (déjà vu)
+- Direct support for <a href="https://master-64.itch.io/mastertoolz">MasterToolz</a>
+- Many settings to toggle on-or-off
 
 # Important notices!
-- If the game is running on an uncapped framerate, the autosplitter may make errors more commonly than on 60 FPS. This autosplitter is calibrated to work mainly on 60 FPS
+- If the game is running on an uncapped framerate, the autosplitter may make errors more commonly than on 60 FPS. You may want to enable the High Refresh Rate Timer option.
 - This autosplitter and load remover was tested on a clean English version of Shrek 2 (PC); may not work on other native versions, or especially on modified directories
 - If you find an error with this script, directly contact Master_64 in the <a href="https://discord.com/invite/0VEIly8qa8WUZAzV">Shrekciety Discord</a>!
 
 # Known Bugs or Issues
 - No major issues known at the moment
 
-### Credits
-- (Developer) <a href="https://github.com/Master-64">Master_64</a>
-- (Technical Help) <a href="https://github.com/kevinjpetersen">HuniePop</a>
-- (Technical Help) <a href="https://www.twitch.tv/seifertv">Seifer</a>
-- (Technical Help) Nikvel
-- (General Help) Janek
-- (General Help) mrjor
-- (General Help) Im_a_mirror
-- (General Help) Metallicafan212
+# Credits
+## Development
+
+- <a href="https://github.com/Master-64">Master_64</a> - Lead Developer
+
+## Technical Assistance
+
+- <a href="https://github.com/Dalet">Dalet</a> - Log Buffer Pointers
+- <a href="https://github.com/kevinjpetersen">HuniePop</a> - Memory Pointer for Map Name
+- <a href="https://www.twitch.tv/seifertv">Seifer</a> - Code, Testing & Feedback
+- Nikvel - Memory Pointer for BossFGM's Health & BossFGM Health Pointer
+- <a href="https://github.com/Master-64">Master_64</a> - All Other Pointers
+
+## General Support
+
+- Janek - Testing & Feedback
+- mrjor - Testing & Feedback
+- Im_a_mirror - Testing
+- Weengell - Testing & Feedback
+- Ablazeknight - Testing
+- Metallicafan212 - Technical Feedback
