@@ -104,7 +104,8 @@ startup // All code that is ran before running all logic
 	vars.LastLogLine = "";					// The last line read from the log buffer
 	
 	// Cultural-friendly float parser
-	Func<string, float> CustomParseFloat = (value) => {
+	Func<string, float> CustomParseFloat = (value) =>
+	{
 		// Remove any leading or trailing whitespace
 		value = value.Trim();
 		
@@ -115,22 +116,22 @@ startup // All code that is ran before running all logic
 		float decimalPlaceValue = 1f;
 		
 		// Check for negative sign
-		if (value.StartsWith("-"))
+		if(value.StartsWith("-"))
 		{
 			isNegative = true;
 			value = value.Substring(1); // Remove the negative sign for further processing
 		}
 		
 		// Iterate through each character in the string
-		for (int i = 0; i < value.Length; i++)
+		for(int i = 0; i < value.Length; i++)
 		{
 			char currentChar = value[i];
 			
 			// Handle digits
-			if (char.IsDigit(currentChar))
+			if(char.IsDigit(currentChar))
 			{
 				int digit = currentChar - '0'; // Convert char to int
-				if (decimalPointEncountered)
+				if(decimalPointEncountered)
 				{
 					// If we have encountered a decimal point, adjust the decimal place value
 					decimalPlaceValue *= 0.1f;
@@ -142,9 +143,9 @@ startup // All code that is ran before running all logic
 				}
 			}
 			// Handle decimal point
-			else if (currentChar == '.' || currentChar == ',')
+			else if(currentChar == '.' || currentChar == ',')
 			{
-				if (decimalPointEncountered)
+				if(decimalPointEncountered)
 				{
 					// If we encounter more than one decimal point, throw an error
 					print("Invalid float format: " + value.ToString());
@@ -159,7 +160,7 @@ startup // All code that is ran before running all logic
 		}
 		
 		// Apply the negative sign if necessary
-		if (isNegative)
+		if(isNegative)
 		{
 			result = -result;
 		}
@@ -172,7 +173,7 @@ startup // All code that is ran before running all logic
 
 init // Initializes the script, and assigns a version number to it
 {
-	version = "ASL v5.0.1 [Release]";
+	version = "ASL v5.0.2 [Release]";
 }
 
 update // Runs everytime the script is ticked
@@ -535,10 +536,15 @@ gameTime // Takes the value of LevelInfo.TimeSeconds from the game, and makes th
 	else
 	{
 		// MasterToolz timing method
-		if(vars.ShouldSplit)
+		if(vars.ShouldSplit && current.TempFloat1 < 15.0)
 		{
 			// Map just loaded, so assume that a delta would be in-accurate, which
 			// it would be if the script does not update quick enough.
+			// We're assuming a map never takes more than 15 seconds to load.
+			// Having a threshold is important to prevent the timer from adding when
+			// it shouldn't, typically across level loads, especially beanstalk world
+			// transitions. This of course allows a potential vector for an unfair
+			// advantage, but I'm unsure how to handle it properly yet. Probably later.
 			vars.TotalGameTime += current.TempFloat1;
 			
 			print("Handled Map Load Initialization");
